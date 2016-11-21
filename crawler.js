@@ -16,6 +16,27 @@ var html_data = ""; // to store the HTML data of the web page
 var already_visited = {}; // to store the links which have already been visited
 var requisite_array = []; // To store the final output of JSON objects with URLs and assets
 
+function ret_complete_url(url,path)
+{
+	if (path.substring(0,4) != "http") // the path is not an absolute path
+	{
+		if (path.charAt(0) == '/') // path begins with a /
+		{
+			url = url+path;
+
+			return url;
+		}
+		else
+		{
+			url = url+"/"+path;
+
+			return url;
+		}
+	}
+	else
+		return path;
+}
+
 function main()
 {
 	rl.question("Please enter the url: ", function(answer) 
@@ -51,12 +72,8 @@ function main()
 					if (a_tags[i].attribs.hasOwnProperty("src")) // if the tag has a source
 					{
 						var img_src = a_tags[i].attribs["src"];
-
-						if (img_src.charAt(0) == '/') // not an absolute path
-						{
-							img_src = cur_url+img_src;
-						}
-
+						img_src = ret_complete_url(cur_url,img_src);
+						
 						resource["assets"].push(img_src);
 					}
 				}
@@ -69,11 +86,7 @@ function main()
 					if (a_tags[i].attribs.hasOwnProperty("src")) // if the tag has a source
 					{
 						var script_src = a_tags[i].attribs["src"];
-
-						if (script_src.charAt(0) == '/') // not an absolute path
-						{
-							script_src = cur_url+script_src;
-						}
+						script_src = ret_complete_url(cur_url,script_src);
 
 						resource["assets"].push(script_src);
 					}
@@ -93,11 +106,7 @@ function main()
 							if (link_rel == "stylesheet") // if the resource is a stylesheet
 							{
 								var stylesheet_src = a_tags[i].attribs["href"]; // source of the stylesheet
-
-								if (stylesheet_src.charAt(0) == '/') // not an absolute path
-								{
-									stylesheet_src = cur_url+stylesheet_src;
-								}
+								stylesheet_src = ret_complete_url(cur_url,stylesheet_src);
 
 								resource["assets"].push(stylesheet_src);
 							}
