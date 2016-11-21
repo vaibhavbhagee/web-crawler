@@ -1,0 +1,24 @@
+{
+  "name": "web-crawler",
+  "version": "1.0.0",
+  "description": "simple single threaded web crawler",
+  "main": "crawler.js",
+  "dependencies" : {
+    "express"    : "latest",
+    "request"    : "latest",
+    "cheerio"    : "latest"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vaibhavbhagee/web-crawler.git"
+  },
+  "author": "Vaibhav Bhagee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vaibhavbhagee/web-crawler/issues"
+  },
+  "homepage": "https://github.com/vaibhavbhagee/web-crawler#readme"
+}
