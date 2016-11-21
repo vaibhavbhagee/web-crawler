@@ -1,8 +1,11 @@
+Web-Crawler-1.0
+---------------
+
 This is a simple web crawler which takes in a URL as an input and returns 
 the static assets (images, scripts and stylesheets) of all the URLs which are
 reachable from the starting URL in a JSON format.
 
-Insatllation Instructions for Windows:
+Installation Instructions for Windows:
 --------------------------------------
 
 1. Install NodeJS for Windows from the following link:
@@ -14,7 +17,7 @@ Insatllation Instructions for Windows:
 
 		npm install
 
-Insatllation instructions for Ubuntu:
+Installation instructions for Ubuntu:
 -------------------------------------
 
 1a. To install NodeJS for Ubuntu, open Terminal and type:
