@@ -23,13 +23,19 @@ function ret_complete_url(url,path)
 	{
 		if (path.charAt(0) == '/') // path begins with a /
 		{
-			url = url+path;
+			if (url.charAt(url.length-1) == '/')
+				url = url.substring(0,url.length-1)+path;
+			else
+				url = url+path;
 
 			return url;
 		}
 		else
 		{
-			url = url+"/"+path;
+			if (url.charAt(url.length-1) == '/')
+				url = url+path;
+			else
+				url = url+"/"+path;
 
 			return url;
 		}
@@ -49,7 +55,7 @@ function abc()
 	var my_url = queue.peek().toString(); // pick the first non visited URL
 	console.log(my_url);
 	queue.deq();
-	already_visited[my_url] = true;
+	// already_visited[my_url] = true;
 
 	var done = false;
 
@@ -76,12 +82,13 @@ function abc()
 			{
 				if (a_tags[i].attribs.hasOwnProperty("href")) // if the tag has a source
 				{
-					var page_src = a_tags[i].attribs["href"];
-					page_src = ret_complete_url(cur_url,page_src);
+					var page_path = a_tags[i].attribs["href"];
+					var page_src = ret_complete_url(cur_url,page_path);
 					
-					if (!already_visited.hasOwnProperty(page_src))
+					if (already_visited.hasOwnProperty(page_src) != true && /*cur_url.substring( Math.max((cur_url.length - page_path.length),0),cur_url.length) != page_path*/ page_path.substring(0,4) == "http")
 					{
 						queue.enq(page_src);
+						already_visited[page_src] = true;
 					}
 				}
 			}
@@ -137,7 +144,7 @@ function abc()
 			}
 
 			requisite_array.push(resource);
-			// console.log(resource);
+			// console.log(requisite_array);
 		}
 
 		var funcall = abc();
@@ -149,12 +156,13 @@ function main()
 	rl.question("Please enter the url: ", function(answer) 
 	{
 	  start_url = answer;
-	  console.log(start_url);
-	  console.log(already_visited);
+	  // console.log(start_url);
+	  // console.log(already_visited);
 
 	  rl.close();
 
 	  // add the start URL to the priority queue
+	  already_visited[start_url] = true;
 
 	  queue.enq(start_url);
 
