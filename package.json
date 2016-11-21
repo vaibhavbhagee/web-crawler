@@ -4,9 +4,10 @@
   "description": "simple single threaded web crawler",
   "main": "crawler.js",
   "dependencies" : {
-    "express"    : "latest",
+    "readline"    : "latest",
     "request"    : "latest",
-    "cheerio"    : "latest"
+    "cheerio"    : "latest",
+    "priorityqueuejs"    : "latest"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

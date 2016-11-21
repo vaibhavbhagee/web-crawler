@@ -30,6 +30,24 @@ function ret_complete_url(url,path)
 
 			return url;
 		}
+		else if (path.substring(0,2) == "./") // path begins with a ./
+		{
+			if (url.charAt(url.length-1) == '/')
+				url = url.substring(0,url.length-1)+path.substring(1,path.length);
+			else
+				url = url+path.substring(1,path.length);
+
+			return url;
+		}
+		else if (path.substring(0,3) == "../") // path begins with a ../
+		{
+			if (url.charAt(url.length-1) == '/')
+				url = url.substring(0,url.length-1)+path.substring(2,path.length);
+			else
+				url = url+path.substring(2,path.length);
+
+			return url;
+		}
 		else
 		{
 			if (url.charAt(url.length-1) == '/')
@@ -53,15 +71,14 @@ function abc()
 	}
 
 	var my_url = queue.peek().toString(); // pick the first non visited URL
-	console.log(my_url);
-	queue.deq();
-	// already_visited[my_url] = true;
+	// console.log(my_url);
+	queue.deq(); // remove the first item from the queue
 
 	var done = false;
 
 	req(String(my_url), function(err,response,html)
 	{
-		console.log("here");
+		// console.log("here");
 		if (err)
 			console.log("Error in making a request!!!");
 		else
@@ -85,7 +102,7 @@ function abc()
 					var page_path = a_tags[i].attribs["href"];
 					var page_src = ret_complete_url(cur_url,page_path);
 					
-					if (already_visited.hasOwnProperty(page_src) != true && /*cur_url.substring( Math.max((cur_url.length - page_path.length),0),cur_url.length) != page_path*/ page_path.substring(0,4) == "http")
+					if (already_visited.hasOwnProperty(page_src) != true && page_path.substring(0,4) == "http")
 					{
 						queue.enq(page_src);
 						already_visited[page_src] = true;
@@ -101,6 +118,19 @@ function abc()
 				if (a_tags[i].attribs.hasOwnProperty("src")) // if the tag has a source
 				{
 					var img_src = a_tags[i].attribs["src"];
+					img_src = ret_complete_url(cur_url,img_src);
+					
+					resource["assets"].push(img_src);
+				}
+			}
+
+			a_tags = $("body");
+
+			for(var i = 0; i < a_tags.length; i++)
+			{
+				if (a_tags[i].attribs.hasOwnProperty("background")) // if the body tag has a background attribute
+				{
+					var img_src = a_tags[i].attribs["background"];
 					img_src = ret_complete_url(cur_url,img_src);
 					
 					resource["assets"].push(img_src);
@@ -156,19 +186,14 @@ function main()
 	rl.question("Please enter the url: ", function(answer) 
 	{
 	  start_url = answer;
-	  // console.log(start_url);
-	  // console.log(already_visited);
 
 	  rl.close();
 
-	  // add the start URL to the priority queue
+	  // add the start URL to the priority queue and hash table
 	  already_visited[start_url] = true;
-
 	  queue.enq(start_url);
 
 		var funcall = abc();
-
-		// console.log(requisite_array);
 
 	});
 }
